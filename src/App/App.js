@@ -1,24 +1,18 @@
 import firebase from 'firebase';
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
 import {Route, BrowserRouter, Redirect, Switch} from 'react-router-dom';
-// import Fish from '../components/Fish/Fish';
 import Home from '../components/Home/Home';
 import Inventory from '../components/Inventory/Inventory';
 import Login from '../components/Login/Login';
 import Navbar from '../components/Navbar/Navbar';
-// import New from '../components/New/New';
-// import Order from '../components/Order/Order';
-// import OrderSpa from '../components/OrderSpa/OrderSpa';
+import New from '../components/New/New';
+import OrderSpa from '../components/OrderSpa/OrderSpa';
 import Register from '../components/Register/Register';
-// import SingleOrder from '../components/SingleOrder/SingleOrder';
+import SingleOrder from '../components/SingleOrder/SingleOrder';
 import fbConnection from '../firebaseRequests/connection';
 fbConnection();
 
-// kinda like helper function, so should be outside of the the component class
-// the "Component" gets passed is the react components
-// ...rest: what are the other things you pass into this route. Anything other than authed and Components
 const PrivateRoute = ({ component: Component, authed, ...rest}) => {
   return (
     <Route
@@ -72,6 +66,10 @@ class App extends Component {
     this.removeListener();
   }
 
+  runAway = () => {
+    this.setState({authed: false});
+  }
+
   render () {
     return (
       <div className="App">
@@ -79,6 +77,7 @@ class App extends Component {
           <div>
             <Navbar
               authed={this.state.authed}
+              runAway={this.runAway}
             />
             <div className="container">
               <div className="row">
@@ -98,6 +97,21 @@ class App extends Component {
                     path="/login"
                     authed={this.state.authed}
                     component={Login}
+                  />
+                  <PrivateRoute
+                    path="/orders"
+                    authed={this.state.authed}
+                    component={OrderSpa}
+                  />
+                  <PrivateRoute
+                    path="/orders:id"
+                    authed={this.state.authed}
+                    component={SingleOrder}
+                  />
+                  <PrivateRoute
+                    path="/new"
+                    authed={this.state.authed}
+                    component={New}
                   />
                 </Switch>
               </div>
