@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
@@ -57,16 +58,28 @@ class App extends Component {
     authed: false,
   }
 
+  componentDidMount () {
+    this.removeListener = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({authed: true});
+      } else {
+        this.setState({authed: false});
+      }
+    });
+  }
+
+  componentWillUnmount () {
+    this.removeListener();
+  }
+
   render () {
     return (
-      // everything outside of <switch> will stay the same
-      // everyting inside of <switch> will be routed
-      // <Route path="/" exact component={Home}/> homepage: "/"; exact only when it is exactlly same as '/'
-      // Pricate Route: see the page only when authenticated
       <div className="App">
         <BrowserRouter>
           <div>
-            <Navbar />
+            <Navbar
+              authed={this.state.authed}
+            />
             <div className="container">
               <div className="row">
                 <Switch>
