@@ -2,10 +2,25 @@ import React from 'react';
 
 import './Fish.css';
 
+import formatPrice from '../../helpers';
+
 class Fish extends React.Component {
   render () {
+    const { details } = this.props;
+    const image = require(`${details.image}`);
+    const isAvailible = details.status === 'available';
     return (
-      <h1 className="Fish">Fish</h1>
+      <li className="Fish">
+        <img src={image} alt={details.name}/>
+        <h3 className="name">
+          {details.name}
+          <span className="price">{formatPrice(details.price)}</span>
+        </h3>
+        <p>{details.desc}</p>
+        <button disabled={!isAvailible}>
+          {isAvailible ? 'Add to Order' : 'Sold Out'};
+        </button>
+      </li>
     );
   }
 };
