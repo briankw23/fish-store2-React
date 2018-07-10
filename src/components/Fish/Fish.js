@@ -5,6 +5,10 @@ import './Fish.css';
 import formatPrice from '../../helpers';
 
 class Fish extends React.Component {
+  addClickEvent = () => {
+    this.props.addToOrder(this.props.details.id);
+    console.error(this.props.details.id);
+  }
   render () {
     const { details } = this.props;
     const image = require(`${details.image}`);
@@ -17,7 +21,10 @@ class Fish extends React.Component {
           <span className="price">{formatPrice(details.price)}</span>
         </h3>
         <p>{details.desc}</p>
-        <button disabled={!isAvailible}>
+        <button
+          disabled={!isAvailible}
+          onClick={this.addClickEvent}
+        >
           {isAvailible ? 'Add to Order' : 'Sold Out'};
         </button>
       </li>
