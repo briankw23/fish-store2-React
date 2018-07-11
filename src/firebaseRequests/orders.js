@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import constants from '../constants';
 
 const getRequest = (uid) => {
@@ -22,4 +21,30 @@ const getRequest = (uid) => {
   });
 };
 
-export default { getRequest };
+const postRequest = (newOrder) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`${constants.firebaseConfig.databaseURL}/orders.json`, newOrder)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+const deleteRequest = (orderId) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(`${constants.firebaseConfig.databaseURL}/orders/${orderId}.json`)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export default { getRequest, postRequest, deleteRequest};
