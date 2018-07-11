@@ -1,7 +1,9 @@
+import React from 'react';
+import {Route, BrowserRouter, Redirect, Switch}  from 'react-router-dom';
 import firebase from 'firebase';
-import React, { Component } from 'react';
+
 import './App.css';
-import {Route, BrowserRouter, Redirect, Switch} from 'react-router-dom';
+
 import Home from '../components/Home/Home';
 import Inventory from '../components/Inventory/Inventory';
 import Login from '../components/Login/Login';
@@ -47,8 +49,8 @@ const PublicRoute = ({ component: Component, authed, ...rest}) => {
   );
 };
 
-class App extends Component {
-  state = {
+class App extends React.Component {
+  state={
     authed: false,
   }
 
@@ -104,7 +106,7 @@ class App extends Component {
                     component={OrderSpa}
                   />
                   <PrivateRoute
-                    path="/orders:id"
+                    path="/order/:id"
                     authed={this.state.authed}
                     component={SingleOrder}
                   />
