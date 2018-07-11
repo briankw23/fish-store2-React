@@ -18,9 +18,9 @@ class SingleOrder extends React.Component {
     fishes: [],
   }
   modifyOrder (id) {
-    const modifiedOrder = {...this.state.order};
+    const modifiedOrder = { ...this.state.order };
     delete modifiedOrder.fishes[id];
-    this.setState({order: modifiedOrder});
+    this.setState({ order: modifiedOrder });
   }
 
   componentDidMount () {
@@ -28,11 +28,11 @@ class SingleOrder extends React.Component {
     orderRequests
       .getSingleRequest(firebaseId)
       .then((order) => {
-        this.setState({order});
+        this.setState({ order });
         fishRequests
           .getRequest()
           .then((fishes) => {
-            this.setState({fishes});
+            this.setState({ fishes });
           });
       })
       .catch(((err) => {
@@ -52,8 +52,20 @@ class SingleOrder extends React.Component {
       }));
   }
 
+  updateOrderClick = () => {
+    const firebaseId = this.props.match.params.id;
+    orderRequests
+      .putRequest(firebaseId, this.state.order)
+      .then(() => {
+        this.props.history.push('/orders');
+      })
+      .catch((err) => {
+        console.error('error with update order', err);
+      });
+  };
+
   render () {
-    const {order} = this.state;
+    const { order } = this.state;
     const orderNumber = this.props.match.params.id;
     const fishComponents = Object.keys(order.fishes).map(o => {
       const purchasedFish = this.state.fishes.find(x => {
@@ -112,7 +124,7 @@ class SingleOrder extends React.Component {
         </div>
         <div>
           <div className="col-xs-6">
-            <button className="col-xs-12 btn btn-default">
+            <button className="col-xs-12 btn btn-default" onClick={this.updateOrderClick}>
               Update Order
             </button>
           </div>
